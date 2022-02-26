@@ -1,5 +1,5 @@
 SRCS = 	philo.c \
-		atoi_and_others.c \
+		free_and_others.c \
 		actions.c \
 
 OBJS = ${SRCS:.c=.o}
