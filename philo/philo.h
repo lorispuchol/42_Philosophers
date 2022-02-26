@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 18:34:52 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/02/26 15:41:47 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/02/26 17:58:02 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,8 +56,7 @@ int		ft_parsing(t_args *args);
 //actions.c
 void	*actions(void *philo);
 //atoi_and_others.c
-int		ft_strlen(char *str);
-void	ft_putstr(char *str);
+void	ft_free(t_args *args);
 int		ft_isdigit(int a);
 int		ft_atoi(const char *str, int *dest, int i);
 

@@ -6,20 +6,24 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 17:03:55 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/02/26 15:28:16 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/02/26 17:58:15 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	ft_strlen(char *str)
+void	ft_free(t_args *args)
 {
 	int	i;
 
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
+	i = -1;
+	while (++i < args->nb_philo)
+	{
+		pthread_detach(args->philo[i].id_th);
+		pthread_mutex_destroy(&args->fork[i]);
+	}
+	free(args->fork);
+	free(args->philo);
 }
 
 int	ft_isdigit(int a)

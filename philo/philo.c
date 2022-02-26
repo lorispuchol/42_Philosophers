@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:56:17 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/02/26 16:05:56 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/02/26 18:02:52 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,9 +32,7 @@ int	ft_init_philos(t_args *args)
 		free (args->philo);
 		return (0 * printf("malloc failed") - 1);
 	}
-	if (ft_init_philos_2(args, -1) == -1)
-		return (-1);
-	return (0);
+	return (ft_init_philos_2(args, -1));
 }
 
 int	ft_init_philos_2(t_args *args, int i)
@@ -43,6 +41,8 @@ int	ft_init_philos_2(t_args *args, int i)
 	{
 		if (pthread_mutex_init(&args->fork[i], NULL) != 0)
 		{
+			while (--i <= 0)
+				pthread_mutex_destroy(&args->fork[i]);
 			free (args->philo);
 			free (args->fork);
 			return (0 * printf("pthread_mutex_init failed\n") - 1);
@@ -61,21 +61,25 @@ int	ft_init_philos_2(t_args *args, int i)
 			args->philo[i].i_fork_r = 0;
 		}
 	}
-	if (ft_init_philos_3(args) == -1)
-		return (-1);
-	return (0);
+	return (ft_init_philos_3(args));
 }
 
 int	ft_init_philos_3(t_args *args)
 {
 	int	i;
+	int	i2;
 
+	i2 = -1;
 	i = -1;
 	while (++i < args->nb_philo)
 	{
 		if (pthread_create(&(args->philo[i].id_th), NULL,
 				&actions, &args->philo[i]) != 0)
 		{
+			while (--i <= 0)
+				pthread_detach(args->philo[i].id_th);
+			while (++i2 < args->nb_philo)
+				pthread_mutex_destroy(&args->fork[i]);
 			free (args->philo);
 			free (args->fork);
 			return (0 * printf("pthread_create failed\n") - 1);
@@ -127,13 +131,11 @@ int	main(int argc, char **argv)
 	{
 		if (pthread_join(args.philo[i].id_th, NULL) != 0)
 		{
-			free (args.philo);
-			free (args.fork);
+			ft_free(&args);
 			return (0 * printf("pthread_join failed\n") - 1);
 		}
 	}
-	free (args.philo);
-	free (args.fork);
+	ft_free(&args);
 	return (0);
 }
 
