@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 18:34:52 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/02/26 17:58:02 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/02/26 19:51:57 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ struct	s_args
 	int				t_eat;
 	int				t_sleep;
 	int				nb_must_eat;
+	pthread_mutex_t	mut_print;
 	pthread_mutex_t	*fork;
 	t_philo			*philo;
 };
@@ -39,8 +40,8 @@ struct	s_args
 struct	s_philo
 {
 	pthread_t		id_th;
-	pthread_mutex_t	fork_l;
-	pthread_mutex_t	fork_r;
+	pthread_mutex_t	*fork_l;
+	pthread_mutex_t	*fork_r;
 	int				i_fork_l;
 	int				i_fork_r;
 	int				id_philo;

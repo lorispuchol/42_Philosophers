@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:56:17 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/02/26 18:02:52 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/02/26 20:06:43 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	ft_init_philos(t_args *args)
 {
 	int	i;
 
+	if (pthread_mutex_init(&args->mut_print, NULL) != 0)
+		return (0 * printf("pthread_mutex_init failed\n") - 1);
 	args->philo = malloc(sizeof(t_philo) * args->nb_philo);
 	if (!args->philo)
 		return (0 * printf("malloc failed") - 1);
@@ -51,13 +53,16 @@ int	ft_init_philos_2(t_args *args, int i)
 	i = -1;
 	while (++i < args->nb_philo)
 	{
-		args->philo[i].fork_l = args->fork[i];
+		args->philo[i].fork_l = &args->fork[i];
 		args->philo[i].i_fork_l = i;
-		args->philo[i].fork_r = args->fork[i + 1];
-		args->philo[i].i_fork_r = i + 1;
-		if (i == (args->nb_philo - 1))
+		if (i != (args->nb_philo - 1))
 		{
-			args->philo[i].fork_r = args->fork[0];
+			args->philo[i].fork_r = &args->fork[i + 1];
+			args->philo[i].i_fork_r = i + 1;
+		}
+		else if (i == (args->nb_philo - 1))
+		{
+			args->philo[i].fork_r = &args->fork[0];
 			args->philo[i].i_fork_r = 0;
 		}
 	}
