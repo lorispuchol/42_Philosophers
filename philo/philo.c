@@ -6,19 +6,19 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:56:17 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/02/25 20:12:34 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/02/26 16:05:56 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-void	ft_init_philos(t_args *args)
+int	ft_init_philos(t_args *args)
 {
 	int	i;
 
 	args->philo = malloc(sizeof(t_philo) * args->nb_philo);
 	if (!args->philo)
-		ft_exit("malloc failed");
+		return (0 * printf("malloc failed") - 1);
 	i = -1;
 	while (++i < args->nb_philo)
 	{
@@ -30,12 +30,14 @@ void	ft_init_philos(t_args *args)
 	if (!args->fork)
 	{
 		free (args->philo);
-		ft_exit("malloc failed");
+		return (0 * printf("malloc failed") - 1);
 	}
-	ft_init_philos_2(args, -1);
+	if (ft_init_philos_2(args, -1) == -1)
+		return (-1);
+	return (0);
 }
 
-void	ft_init_philos_2(t_args *args, int i)
+int	ft_init_philos_2(t_args *args, int i)
 {
 	while (++i < args->nb_philo)
 	{
@@ -43,7 +45,7 @@ void	ft_init_philos_2(t_args *args, int i)
 		{
 			free (args->philo);
 			free (args->fork);
-			ft_exit("pthread_mutex_init failed\n");
+			return (0 * printf("pthread_mutex_init failed\n") - 1);
 		}
 	}
 	i = -1;
@@ -59,10 +61,12 @@ void	ft_init_philos_2(t_args *args, int i)
 			args->philo[i].i_fork_r = 0;
 		}
 	}
-	ft_init_philos_3(args);
+	if (ft_init_philos_3(args) == -1)
+		return (-1);
+	return (0);
 }
 
-void	ft_init_philos_3(t_args *args)
+int	ft_init_philos_3(t_args *args)
 {
 	int	i;
 
@@ -74,30 +78,37 @@ void	ft_init_philos_3(t_args *args)
 		{
 			free (args->philo);
 			free (args->fork);
-			ft_exit("pthread_create failed\n");
+			return (0 * printf("pthread_create failed\n") - 1);
 		}
 	}
+	return (0);
 }
 
-void	ft_parsing(t_args *args)
+int	ft_parsing(t_args *args)
 {
 	if (args->argc != 5 && args->argc != 6)
-		ft_exit("wrong number of arguments\n");
-	args->nb_philo = ft_atoi(args->argv[1]);
-	args->t_die = ft_atoi(args->argv[2]);
-	args->t_eat = ft_atoi(args->argv[3]);
-	args->t_sleep = ft_atoi(args->argv[4]);
+		return (0 * printf("wrong number of arguments\n") - 1);
+	if (ft_atoi(args->argv[1], &args->nb_philo, 0) == -1)
+		return (-1);
+	if (ft_atoi(args->argv[2], &args->t_die, 0) == -1)
+		return (-1);
+	if (ft_atoi(args->argv[3], &args->t_eat, 0) == -1)
+		return (-1);
+	if (ft_atoi(args->argv[4], &args->t_sleep, 0) == -1)
+		return (-1);
 	if (args->nb_philo <= 0 || args->t_die < 0
 		|| args->t_eat < 0 || args->t_sleep < 0)
-		ft_exit("At least one invalid argument\n");
+		return (0 * printf("At least one invalid argument\n") - 1);
 	if (args->argc == 6)
 	{
-		args->nb_must_eat = ft_atoi(args->argv[5]);
+		if (ft_atoi(args->argv[5], &args->nb_must_eat, 0) == -1)
+			return (-1);
 		if (args->nb_must_eat < 0)
-			ft_exit("Invalid optional argument\n");
+			return (0 * printf("Invalid optional argument\n") - 1);
 	}
 	else
 		args->nb_must_eat = -1;
+	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -107,8 +118,10 @@ int	main(int argc, char **argv)
 
 	args.argv = argv;
 	args.argc = argc;
-	ft_parsing(&args);
-	ft_init_philos(&args);
+	if (ft_parsing(&args) == -1)
+		return (-1);
+	if (ft_init_philos(&args) == -1)
+		return (-1);
 	i = -1;
 	while (++i < args.nb_philo)
 	{
@@ -116,7 +129,7 @@ int	main(int argc, char **argv)
 		{
 			free (args.philo);
 			free (args.fork);
-			ft_exit("pthread_join failed\n");
+			return (0 * printf("pthread_join failed\n") - 1);
 		}
 	}
 	free (args.philo);
@@ -137,19 +150,19 @@ int	main(int argc, char **argv)
 
 /*	
 	affiche les id des philos
-	int i = -1;
-	while (++i < args.nb_philo)
+	i = -1;
+	while (++i < args->nb_philo)
 	{
-		printf ("ID philo : %d\n", args.philo[i].id_philo);
-		printf ("NB meal  : %d\n\n", args.philo[i].nb_meal);
+		printf ("ID philo : %d\n", args->philo[i].id_philo);
+		printf ("NB meal  : %d\n\n", args->philo[i].nb_meal);
 	}
 */
 
 /*
 	affiche les user input
-	printf("nb_philo : %d\n", args.nb_philo);
-	printf("t_die : %d\n", args.t_die);
-	printf("t_eat : %d\n", args.t_eat);
-	printf("t_sleep : %d\n", args.t_sleep);
-	printf("nb_must_eat : %d\n", args.nb_must_eat);
+	printf("nb_philo : %d\n", args->nb_philo);
+	printf("t_die : %d\n", args->t_die);
+	printf("t_eat : %d\n", args->t_eat);
+	printf("t_sleep : %d\n", args->t_sleep);
+	printf("nb_must_eat : %d\n", args->nb_must_eat);
 */

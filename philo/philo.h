@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 18:34:52 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/02/25 16:35:00 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/02/26 15:41:47 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,16 +49,16 @@ struct	s_philo
 };
 
 //philo.c
-void	ft_init_philos(t_args *args);
-void	ft_init_philos_2(t_args *args, int i);
-void	ft_init_philos_3(t_args *args);
-void	ft_parsing(t_args *args);
+int		ft_init_philos(t_args *args);
+int		ft_init_philos_2(t_args *args, int i);
+int		ft_init_philos_3(t_args *args);
+int		ft_parsing(t_args *args);
 //actions.c
-void	ft_exit(char *str);
 void	*actions(void *philo);
-//atoi_exit_and_others.c
+//atoi_and_others.c
 int		ft_strlen(char *str);
+void	ft_putstr(char *str);
 int		ft_isdigit(int a);
-int		ft_atoi(const char *str);
+int		ft_atoi(const char *str, int *dest, int i);
 
 #endif

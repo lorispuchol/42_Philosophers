@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 17:03:55 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/02/25 16:11:37 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/02/26 15:28:16 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,31 +32,30 @@ int	ft_isdigit(int a)
 	return (ret);
 }
 
-int	ft_atoi(const char *str)
+int	ft_atoi(const char *str, int *dest, int i)
 {
 	long	ret;
-	int		i;
 	int		signe;
 
 	signe = 1;
 	ret = 0;
-	i = 0;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
 	while (str[i] == '+' || str[i] == '-')
 		if (str[i++] == '-')
 			signe = -signe;
 	if (str[i] == '\0')
-		ft_exit("Non-numeric argument\n");
+		return (0 * printf("Non-numeric argument\n") - 1);
 	while (str[i] && ft_isdigit(str[i]) == 1)
 	{
 		ret = ret * 10 + str[i] - 48;
 		if ((ret > 2147483648 && signe == -1)
 			|| (ret > 2147483647 && signe == 1))
-			ft_exit("Argument too big\n");
+			return (0 * printf("Argument too big\n") - 1);
 		i++;
 	}
 	if (ft_isdigit(str[i]) == 0 && str[i] != '\0')
-		ft_exit("Non-numeric argument\n");
-	return (ret * signe);
+		return (0 * printf("Non-numeric argument\n") - 1);
+	*dest = (ret * signe);
+	return (0);
 }

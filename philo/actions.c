@@ -6,17 +6,11 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 11:42:27 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/02/25 16:33:03 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/02/26 16:05:34 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
-
-void	ft_exit(char *str)
-{
-	write (2, str, ft_strlen(str));
-	exit (1);
-}
 
 void	*actions(void *philo)
 {
