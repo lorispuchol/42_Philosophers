@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:56:17 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/02/26 20:06:43 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/02/28 19:33:16 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,6 @@ int	ft_init_philos(t_args *args)
 {
 	int	i;
 
-	if (pthread_mutex_init(&args->mut_print, NULL) != 0)
-		return (0 * printf("pthread_mutex_init failed\n") - 1);
 	args->philo = malloc(sizeof(t_philo) * args->nb_philo);
 	if (!args->philo)
 		return (0 * printf("malloc failed") - 1);
@@ -34,10 +32,10 @@ int	ft_init_philos(t_args *args)
 		free (args->philo);
 		return (0 * printf("malloc failed") - 1);
 	}
-	return (ft_init_philos_2(args, -1));
+	return (ft_init_forks(args, -1));
 }
 
-int	ft_init_philos_2(t_args *args, int i)
+int	ft_init_forks(t_args *args, int i)
 {
 	while (++i < args->nb_philo)
 	{
@@ -53,28 +51,27 @@ int	ft_init_philos_2(t_args *args, int i)
 	i = -1;
 	while (++i < args->nb_philo)
 	{
-		args->philo[i].fork_l = &args->fork[i];
-		args->philo[i].i_fork_l = i;
+		args->philo[i].fork_l = i;
 		if (i != (args->nb_philo - 1))
-		{
-			args->philo[i].fork_r = &args->fork[i + 1];
-			args->philo[i].i_fork_r = i + 1;
-		}
+			args->philo[i].fork_r = i + 1;
 		else if (i == (args->nb_philo - 1))
-		{
-			args->philo[i].fork_r = &args->fork[0];
-			args->philo[i].i_fork_r = 0;
-		}
+			args->philo[i].fork_r = 0;
 	}
-	return (ft_init_philos_3(args));
+	return (ft_launch_philos(args, -1, -1));
 }
 
-int	ft_init_philos_3(t_args *args)
+int	ft_launch_philos(t_args *args, int i, int i2)
 {
-	int	i;
-	int	i2;
-
-	i2 = -1;
+	if (pthread_mutex_init(&args->mut_print, NULL) != 0)
+	{
+		while (++i < args->nb_philo)
+			pthread_mutex_destroy(&args->fork[i]);
+		free (args->fork);
+		free (args->philo);
+		return (0 * printf("pthread_mutex_init failed\n") - 1);
+	}
+	if (ft_get_start_time(args) != 0)
+		return (0 * printf("gettimeofday failed\n") - 1);
 	i = -1;
 	while (++i < args->nb_philo)
 	{
@@ -150,8 +147,8 @@ int	main(int argc, char **argv)
 	while (++i < args->nb_philo)
 	{
 		printf ("ID philo  : %d\n", args->philo[i].id_philo);
-		printf ("fork left : %d\n", args->philo[i].i_fork_l);
-		printf ("fork right : %d\n", args->philo[i].i_fork_r);
+		printf ("fork left : %d\n", args->philo[i].fork_l);
+		printf ("fork right : %d\n", args->philo[i].fork_r);
 	}
 */
 

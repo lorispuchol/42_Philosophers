@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 18:34:52 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/02/26 19:51:57 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/02/28 19:17:08 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ typedef struct s_philo	t_philo;
 
 struct	s_args
 {
+	struct timeval	start_time;
+	struct timeval	current_time;
 	int				argc;
 	char			**argv;
 	int				nb_philo;
@@ -40,10 +42,8 @@ struct	s_args
 struct	s_philo
 {
 	pthread_t		id_th;
-	pthread_mutex_t	*fork_l;
-	pthread_mutex_t	*fork_r;
-	int				i_fork_l;
-	int				i_fork_r;
+	int				fork_l;
+	int				fork_r;
 	int				id_philo;
 	int				nb_meal;
 	t_args			*ar;
@@ -51,13 +51,16 @@ struct	s_philo
 
 //philo.c
 int		ft_init_philos(t_args *args);
-int		ft_init_philos_2(t_args *args, int i);
-int		ft_init_philos_3(t_args *args);
+int		ft_init_forks(t_args *args, int i);
+int		ft_launch_philos(t_args *args, int i, int i2);
 int		ft_parsing(t_args *args);
 //actions.c
+int		ft_display_log(t_philo *philo, char *str);
 void	*actions(void *philo);
 //atoi_and_others.c
 void	ft_free(t_args *args);
+int		ft_get_current_time(t_args *args);
+int		ft_get_start_time(t_args *args);
 int		ft_isdigit(int a);
 int		ft_atoi(const char *str, int *dest, int i);
 

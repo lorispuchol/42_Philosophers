@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   atoi_and_others.c                                  :+:      :+:    :+:   */
+/*   free_get_time_and_others.c                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 17:03:55 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/02/26 17:58:15 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/02/28 19:46:19 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,36 @@ void	ft_free(t_args *args)
 		pthread_detach(args->philo[i].id_th);
 		pthread_mutex_destroy(&args->fork[i]);
 	}
+	pthread_mutex_destroy(&args->mut_print);
 	free(args->fork);
 	free(args->philo);
+}
+
+int	ft_get_current_time(t_args *args)
+{	
+	if (gettimeofday(&args->current_time, NULL) != 0)
+	{
+		ft_free(args);
+		return (0 * printf("gettimeofday failed\n") - 1);
+	}
+	return (0);
+}
+
+int	ft_get_start_time(t_args *args)
+{
+	int	i;
+
+	i = -1;
+	if (gettimeofday(&args->start_time, NULL) != 0)
+	{
+		while (++i < args->nb_philo)
+			pthread_mutex_destroy(&args->fork[i]);
+		pthread_mutex_destroy(&args->mut_print);
+		free (args->fork);
+		free (args->philo);
+		return (-1);
+	}
+	return (0);
 }
 
 int	ft_isdigit(int a)
