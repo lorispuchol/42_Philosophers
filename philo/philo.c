@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:56:17 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/03/03 16:36:45 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/03/03 17:12:38 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,6 @@ int	ft_init_philos(t_args *args)
 		args->philo[i].ar = args;
 		args->philo[i].die = 0;
 		args->philo[i].finish_eat = 0;
-		
 	}
 	args->fork = malloc(sizeof(pthread_mutex_t) * args->nb_philo);
 	if (!args->fork)
@@ -61,7 +60,6 @@ int	ft_init_forks(t_args *args, int i)
 		else if (i == (args->nb_philo - 1))
 			args->philo[i].fork_r = 0;
 	}
-	
 	return (ft_launch_philos(args, -1, -1));
 }
 
@@ -124,7 +122,6 @@ int	ft_parsing(t_args *args)
 int	main(int argc, char **argv)
 {
 	t_args	args;
-	int		i;
 
 	args.argv = argv;
 	args.argc = argc;
@@ -134,24 +131,8 @@ int	main(int argc, char **argv)
 		return (-1);
 	if (ft_init_philos(&args) == -1)
 		return (-1);
-	while(args.end == 0)
+	while (args.end == 0)
 		ft_main_check_if_die_or_finish(&args);
-	
 	ft_free(&args);
 	return (-1);
-	
-//////////////////
-	
-	i = -1;
-	while (++i < args.nb_philo)
-	{
-		if (pthread_join(args.philo[i].id_th, NULL) != 0)
-		{
-			ft_free(&args);
-			return (0 * printf("pthread_join failed\n") - 1);
-		}
-	}
-	ft_free(&args);
-	return (0);
-
 }

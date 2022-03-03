@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/22 17:03:55 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/03/03 16:02:36 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/03/03 17:11:23 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,13 +37,12 @@ void	ft_display_log(t_philo *philo, char *str)
 	pthread_mutex_unlock(&philo->ar->mut_print);
 }
 
-long long int ft_get_time_now(void)
+long long int	ft_get_time_now(void)
 {
-	long long int time;
+	long long int	time;
 	struct timeval	st_time;
-	
+
 	gettimeofday(&st_time, NULL);
 	time = st_time.tv_sec * 1000 + st_time.tv_usec / 1000;
 	return (time);
 }
-
