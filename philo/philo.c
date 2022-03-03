@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:56:17 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/03/02 17:35:28 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/03/03 16:36:45 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@ int	ft_init_philos(t_args *args)
 		args->philo[i].nb_meal = 0;
 		args->philo[i].chrono_last_meal = 0;
 		args->philo[i].ar = args;
+		args->philo[i].die = 0;
+		args->philo[i].finish_eat = 0;
+		
 	}
 	args->fork = malloc(sizeof(pthread_mutex_t) * args->nb_philo);
 	if (!args->fork)
@@ -126,10 +129,19 @@ int	main(int argc, char **argv)
 	args.argv = argv;
 	args.argc = argc;
 	args.end = 0;
+	args.nb_finish_eat = 0;
 	if (ft_parsing(&args) == -1)
 		return (-1);
 	if (ft_init_philos(&args) == -1)
 		return (-1);
+	while(args.end == 0)
+		ft_main_check_if_die_or_finish(&args);
+	
+	ft_free(&args);
+	return (-1);
+	
+//////////////////
+	
 	i = -1;
 	while (++i < args.nb_philo)
 	{
@@ -141,34 +153,5 @@ int	main(int argc, char **argv)
 	}
 	ft_free(&args);
 	return (0);
+
 }
-
-/*
-	affiche l'association des fourchettes et des philos
-	i = -1;
-	while (++i < args->nb_philo)
-	{
-		printf ("ID philo  : %d\n", args->philo[i].id_philo);
-		printf ("fork left : %d\n", args->philo[i].fork_l);
-		printf ("fork right : %d\n", args->philo[i].fork_r);
-	}
-*/
-
-/*	
-	affiche les id des philos
-	i = -1;
-	while (++i < args->nb_philo)
-	{
-		printf ("ID philo : %d\n", args->philo[i].id_philo);
-		printf ("NB meal  : %d\n\n", args->philo[i].nb_meal);
-	}
-*/
-
-/*
-	affiche les user input
-	printf("nb_philo : %d\n", args->nb_philo);
-	printf("t_die : %d\n", args->t_die);
-	printf("t_eat : %d\n", args->t_eat);
-	printf("t_sleep : %d\n", args->t_sleep);
-	printf("nb_must_eat : %d\n", args->nb_must_eat);
-*/
