@@ -1,13 +1,14 @@
 SRCS = 	philo.c \
-		free_get_time_and_others.c \
 		actions.c \
+		free_and_gettime.c \
+		utils.c \
 
 OBJS = ${SRCS:.c=.o}
 
 NAME = philo
 
 CC = gcc
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS =  -Wall -Werror -Wextra #-fsanitize=thread
 
 RM = rm -rf
 

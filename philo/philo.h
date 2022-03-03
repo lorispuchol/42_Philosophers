@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 18:34:52 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/02/28 19:17:08 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/03/02 18:00:24 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ typedef struct s_philo	t_philo;
 
 struct	s_args
 {
-	struct timeval	start_time;
-	struct timeval	current_time;
+	long long int	time_start;
+	long long int	chrono_now;
 	int				argc;
 	char			**argv;
 	int				nb_philo;
@@ -34,6 +34,7 @@ struct	s_args
 	int				t_eat;
 	int				t_sleep;
 	int				nb_must_eat;
+	int				end;
 	pthread_mutex_t	mut_print;
 	pthread_mutex_t	*fork;
 	t_philo			*philo;
@@ -41,6 +42,7 @@ struct	s_args
 
 struct	s_philo
 {
+	long long int	chrono_last_meal;
 	pthread_t		id_th;
 	int				fork_l;
 	int				fork_r;
@@ -49,19 +51,19 @@ struct	s_philo
 	t_args			*ar;
 };
 
-//philo.c
-int		ft_init_philos(t_args *args);
-int		ft_init_forks(t_args *args, int i);
-int		ft_launch_philos(t_args *args, int i, int i2);
-int		ft_parsing(t_args *args);
-//actions.c
-int		ft_display_log(t_philo *philo, char *str);
-void	*actions(void *philo);
-//atoi_and_others.c
-void	ft_free(t_args *args);
-int		ft_get_current_time(t_args *args);
-int		ft_get_start_time(t_args *args);
-int		ft_isdigit(int a);
-int		ft_atoi(const char *str, int *dest, int i);
+// philo.c
+int				ft_init_philos(t_args *args);
+int				ft_init_forks(t_args *args, int i);
+int				ft_launch_philos(t_args *args, int i, int i2);
+int				ft_parsing(t_args *args);
+// actions.c
+void			ft_display_log(t_philo *philo, char *str);
+void			*actions(void *philo);
+// free_and_gettime.c
+void			ft_free(t_args *args);
+long long int	ft_get_time_now(void);
+// utils.c
+int				ft_isdigit(int a);
+int				ft_atoi(const char *str, int *dest, int i);
 
 #endif

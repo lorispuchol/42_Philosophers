@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:56:17 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/02/28 19:33:16 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/03/02 17:35:28 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	ft_init_philos(t_args *args)
 	{
 		args->philo[i].id_philo = i + 1;
 		args->philo[i].nb_meal = 0;
+		args->philo[i].chrono_last_meal = 0;
 		args->philo[i].ar = args;
 	}
 	args->fork = malloc(sizeof(pthread_mutex_t) * args->nb_philo);
@@ -57,6 +58,7 @@ int	ft_init_forks(t_args *args, int i)
 		else if (i == (args->nb_philo - 1))
 			args->philo[i].fork_r = 0;
 	}
+	
 	return (ft_launch_philos(args, -1, -1));
 }
 
@@ -70,9 +72,8 @@ int	ft_launch_philos(t_args *args, int i, int i2)
 		free (args->philo);
 		return (0 * printf("pthread_mutex_init failed\n") - 1);
 	}
-	if (ft_get_start_time(args) != 0)
-		return (0 * printf("gettimeofday failed\n") - 1);
 	i = -1;
+	args->time_start = ft_get_time_now();
 	while (++i < args->nb_philo)
 	{
 		if (pthread_create(&(args->philo[i].id_th), NULL,
@@ -124,6 +125,7 @@ int	main(int argc, char **argv)
 
 	args.argv = argv;
 	args.argc = argc;
+	args.end = 0;
 	if (ft_parsing(&args) == -1)
 		return (-1);
 	if (ft_init_philos(&args) == -1)
