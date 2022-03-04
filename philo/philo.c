@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/21 11:56:17 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/03/03 17:12:38 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/03/04 15:52:31 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,10 +129,17 @@ int	main(int argc, char **argv)
 	args.nb_finish_eat = 0;
 	if (ft_parsing(&args) == -1)
 		return (-1);
+	if (args.nb_philo == 1)
+	{
+		ft_one_philo(&args);
+		return (0);
+	}
 	if (ft_init_philos(&args) == -1)
 		return (-1);
 	while (args.end == 0)
 		ft_main_check_if_die_or_finish(&args);
+	if (ft_end(&args) != 0)
+		return (-1);
 	ft_free(&args);
-	return (-1);
+	return (0);
 }

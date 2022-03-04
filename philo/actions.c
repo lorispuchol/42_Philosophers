@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/25 11:42:27 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/03/03 17:10:57 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/03/04 12:36:08 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,8 @@ void	ft_main_check_if_die_or_finish(t_args *args)
 			pthread_mutex_unlock(&args->mut_print);
 			return ;
 		}
-		pthread_mutex_unlock(&args->mut_print);
+		else
+			pthread_mutex_unlock(&args->mut_print);
 	}
 	pthread_mutex_lock(&args->mut_print);
 	if (args->nb_finish_eat == args->nb_philo)
@@ -87,13 +88,24 @@ void	*actions(void *philo)
 	ph = (t_philo *)philo;
 	if ((ph->id_philo % 2) == 0)
 		usleep(500);
+	pthread_mutex_lock(&ph->ar->mut_print);
 	while (ph->die == 0 && ph->finish_eat == 0 && ph->ar->end == 0)
 	{
+		pthread_mutex_unlock(&ph->ar->mut_print);
 		ft_eat(ph);
+		pthread_mutex_lock(&ph->ar->mut_print);
 		if (ph->die == 0 && ph->finish_eat == 0 && ph->ar->end == 0)
+		{
+			pthread_mutex_unlock(&ph->ar->mut_print);
 			ft_sleep(ph);
+		}
 		else
+		{
+			pthread_mutex_unlock(&ph->ar->mut_print);
 			return (NULL);
+		}
+		pthread_mutex_lock(&ph->ar->mut_print);
 	}
+	pthread_mutex_unlock(&ph->ar->mut_print);
 	return (NULL);
 }

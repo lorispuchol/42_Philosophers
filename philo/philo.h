@@ -6,7 +6,7 @@
 /*   By: lpuchol <lpuchol@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/18 18:34:52 by lpuchol           #+#    #+#             */
-/*   Updated: 2022/03/03 14:08:18 by lpuchol          ###   ########.fr       */
+/*   Updated: 2022/03/04 15:50:21 by lpuchol          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,8 @@ void			ft_sleep(t_philo *philo);
 void			ft_eat(t_philo *philo);
 void			*actions(void *philo);
 // free_and_gettime.c
+int				ft_end(t_args *args);
+void			ft_one_philo(t_args *args);
 void			ft_free(t_args *args);
 void			ft_display_log(t_philo *philo, char *str);
 long long int	ft_get_time_now(void);
